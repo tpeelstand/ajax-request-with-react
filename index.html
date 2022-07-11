@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- React Library -->
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <!-- React DOM -->
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <!-- BABEL Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js" integrity="sha512-kp7YHLxuJDJcOzStgd6vtpxr4ZU9kjn77e6dBsivSz+pUuAuMlE2UTdKB7jjsWT84qbS8kdCWHPETnP/ctrFsA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <title>AJAX Request</title>
+</head>
+<body>
+    <div id="app">React has not rendered yet.</div>
+
+
+    <script type="text/babel">
+        //Creating our class component  using class this is deals with state.
+       class StarWars extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                items: []
+            }
+        }
+
+        // ComponentDid Mount
+        componentDidMount() {
+            fetch('https://swapi.dev/api/people/')
+            .then(response => response.json())
+            .then(responseData => {
+                this.setState({
+                    items: responseData.results
+                });
+            })
+            .catch(error => {
+                console.log('Fetching and parsing data error', error);
+            })
+        }
+
+        //Render to the DOM
+        render() {
+            let items = this.state.items;
+            //console.log(items);
+            return(
+            <div>
+                {items.map(function(item) {
+                    return <h4 key={item.name}>{item.name} was born in {item.birth_year} and has the eye color of {item.eye_color}. {item.name} is {item.height}cm tall.</h4>
+                })}
+            </div>
+            );
+        }
+       }
+
+        ReactDOM.render (
+            <StarWars/>,
+            document.getElementById('app')
+        );
+    </script>
+</body>
+</html>
